@@ -1,10 +1,13 @@
 #1) ice americano : 2000 2) cafe latte : 3000
-menu = input("1) ice americano  2) cafe latte  3) exit : ")
-if menu=="1":
-    print("ice americano ordered. Price: 2000 won")
+while True:
 
-elif menu=="2":
-    print("cafe latte ordered. Price: 3000 won")
+    menu = input("1) ice americano  2) cafe latte  3) exit : ")
+    if menu=="1":
+        print("ice americano ordered. Price: 2000 won")
 
-elif menu=="3":
-    print("finish order~")
+    elif menu=="2":
+        print("cafe latte ordered. Price: 3000 won")
+
+    elif menu=="3":
+        print("finish order~")
+        break
