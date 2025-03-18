@@ -8,6 +8,11 @@ amounts=[0]*len(drinks)
 
 
 def order_process(idx: int):
+    """
+    Functions that address the beverage order display function,
+    the total cumulative amount ajjeogu
+    :param idx: list's index number
+    """
     global total_price
     print(f"{drinks[idx]} ordered. Price: {prices[idx]} won")
     total_price += prices[idx]
@@ -18,7 +23,7 @@ def order_process(idx: int):
 menu_lists="".join(f"{k+1}) {drinks[k]} {prices[k]}won  " for k in range(len(drinks)))
 menu_lists+=f"{len(drinks)+1}) Exit: "
 
-
+help(order_process)
 while True:
 
     menu = int(input(menu_lists))
