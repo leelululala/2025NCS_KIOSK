@@ -5,7 +5,7 @@ def time_measure_decorate(f):
         s=time.time()
         r=f(*args)
         e=time.time()
-        print(e-s)
+        print(f"time: {e-s}")
         return r
     return wrapper
 
@@ -16,11 +16,20 @@ def one_to_n_loop(n):
         result=result+i
     return result
 
-@time_measure_decorate
+#@time_measure_decorate
 def one_to_n_math(n):
     r=n*(n+1)//2
     return r
 
 number=int(input("input number: "))
+
+func=time_measure_decorate(one_to_n_math)
+print(func(number))
+
 print(one_to_n_loop(number))
-print(one_to_n_math(number))
+#print(one_to_n_math(number))
+
+"""
+데코레이트를 붙이면 원래 함수 코드는 손 안대도 됨.
+
+"""
