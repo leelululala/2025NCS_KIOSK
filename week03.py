@@ -19,15 +19,10 @@ menu_lists+=f"{len(drinks)+1}) Exit: "
 
 while True:
 
-    menu = input(menu_lists)
-    if menu=="1":
-        order_process(0)
-    elif menu=="2":
-        order_process(1)
-    elif menu=="3":
-        order_process(2)
-
-    elif menu=="4":
+    menu = int(input(menu_lists))
+    if 1<=menu<=len(drinks):
+        order_process(menu-1)
+    elif menu==len(drinks)+1:
         print("finish order~")
         break
     else:
