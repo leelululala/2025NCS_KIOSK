@@ -5,6 +5,10 @@
 temp.py
 mymodule.py
 *.txt
+*.exe
+temp.db
+test.db
+test.db-journal
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml

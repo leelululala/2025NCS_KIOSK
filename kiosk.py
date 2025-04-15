@@ -156,5 +156,9 @@ class OrderProcessor:
         self.print_receipt()
         print(f"Queue number ticket : {self.get_next_ticket_number()}")
 
+    def __del__(self):#매직 메소드. 가비지 컬렉터에 의해 호출
+        # db connection close ....
+        print('End program')
+
 
 
