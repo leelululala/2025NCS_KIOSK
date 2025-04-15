@@ -1,3 +1,4 @@
+import sqlite3
 from typing import List  # type hint
 
 
@@ -71,6 +72,18 @@ class OrderProcessor:
         self.amounts = [0] * menu.get_menu_length()
         self.total_price = 0
 
+        self.conn = sqlite3.connect('queue_number.db')
+        self.cur = self.conn.cursor()
+
+        self.cur.execute('''
+            create table if not exists ticket (
+            id integer primary key autoincrement,
+            number integer not null
+            )
+        ''')
+
+        self.conn.commit()
+
     def apply_discount(self, price: int) -> float:
         """
         Apply discount rate when the total amount exceeds a certain threshold
@@ -119,20 +132,34 @@ class OrderProcessor:
 
     def get_next_ticket_number(self)->int:
         """
-        Function that Produce next ticket number
+        Function that Produce next ticket number (database version)
         :return:
         next ticket number
         """
-        try:
-            with open("ticket_number.txt","r") as fp:
-                number=int(fp.read())
-        except FileNotFoundError:
-            number=0
-        number+=1
+        self.cur.execute('select number from ticket order by number desc limit 1')
+        result=self.cur.fetchone()
 
-        with open("ticket_number.txt","w") as fp:
-            fp.write(str(number))
+        if result is None:
+            number=1
+            self.cur.execute('insert into ticket (number) values (?)',(number,))
+        else:
+            number=result[0]+1
+            self.cur.execute('insert into ticket (number) values (?)', (number,))
+
+        self.conn.commit()
         return number
+
+
+        # try:
+        #     with open("ticket_number.txt","r") as fp:
+        #         number=int(fp.read())
+        # except FileNotFoundError:
+        #     number=0
+        # number+=1
+        #
+        # with open("ticket_number.txt","w") as fp:
+        #     fp.write(str(number))
+        # return number
 
     def run(self):
         """Execute the order system"""
@@ -157,8 +184,8 @@ class OrderProcessor:
         print(f"Queue number ticket : {self.get_next_ticket_number()}")
 
     def __del__(self):#매직 메소드. 가비지 컬렉터에 의해 호출
-        # db connection close ....
         print('End program')
+        self.conn.close() # db connection close .... 객체 소멸 시 db연결 끊기게
 
 
 

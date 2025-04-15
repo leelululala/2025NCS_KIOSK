@@ -9,6 +9,7 @@ mymodule.py
 temp.db
 test.db
 test.db-journal
+*.db
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
