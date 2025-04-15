@@ -1,5 +1,5 @@
-import sqlite3
 from typing import List  # type hint
+import sqlite3
 
 
 class Menu:
@@ -84,6 +84,8 @@ class OrderProcessor:
 
         self.conn.commit()
 
+
+
     def apply_discount(self, price: int) -> float:
         """
         Apply discount rate when the total amount exceeds a certain threshold
@@ -130,40 +132,28 @@ class OrderProcessor:
             print(f"{'No discount applied.':<30}")
             print(f"{'Total price:':<30} {self.total_price:>5} won")
 
-    def get_next_ticket_number(self)->int:
+    def get_next_ticket_number(self) -> int:
         """
-        Function that Produce next ticket number (database version)
-        :return:
-        next ticket number
+        Function that Produce next ticket number (Database version)
+        :return: next ticket number
         """
         self.cur.execute('select number from ticket order by number desc limit 1')
-        result=self.cur.fetchone()
+        result = self.cur.fetchone()
 
         if result is None:
-            number=1
+            number = 1
             self.cur.execute('insert into ticket (number) values (?)',(number,))
         else:
-            number=result[0]+1
-            self.cur.execute('insert into ticket (number) values (?)', (number,))
+            number = result[0] + 1
+            # self.cur.execute('insert into ticket (number) values (?)', (number,))
+            self.cur.execute('update ticket set number = ? where id = (select id from ticket order by id desc limit 1)',
+                             (number,))
 
         self.conn.commit()
         return number
 
-
-        # try:
-        #     with open("ticket_number.txt","r") as fp:
-        #         number=int(fp.read())
-        # except FileNotFoundError:
-        #     number=0
-        # number+=1
-        #
-        # with open("ticket_number.txt","w") as fp:
-        #     fp.write(str(number))
-        # return number
-
     def run(self):
         """Execute the order system"""
-
         while True:
             try:
                 menu_display = self.menu.display_menu()
@@ -183,9 +173,6 @@ class OrderProcessor:
         self.print_receipt()
         print(f"Queue number ticket : {self.get_next_ticket_number()}")
 
-    def __del__(self):#매직 메소드. 가비지 컬렉터에 의해 호출
+    def __del__(self):#매직메소드, 가비지 콜렉트 될 때 실행됨.
         print('End program')
-        self.conn.close() # db connection close .... 객체 소멸 시 db연결 끊기게
-
-
-
+        self.conn.close()  # db connection close ....
