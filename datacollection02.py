@@ -65,7 +65,7 @@ for i in range(len(cities)):
   #print(f"{cities[i].string}의 날씨는 {wfs[i*13].string}입니다")
   print(f"{cities[i].string}의 날씨는 {datas[i*13].find('wf').string}입니다")
 
-!pip install datasets
+
 
 from datasets import load_dataset
 
